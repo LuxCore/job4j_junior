@@ -15,7 +15,7 @@ class SearchTest {
 				Path.of("./src/main/java/ru/job4j/io/search_resources/one.txt"),
 				Path.of("./src/main/java/ru/job4j/io/search_resources/three.txt")
 		);
-		Path start = Path.of(".");
+		Path start = Path.of("./src/main/java/ru/job4j/io/search_resources");
 		List<Path> actual = Search.search(start, path -> path.toFile().getName().endsWith(".txt"));
 		assertThat(actual).isEqualTo(expected);
 	}
