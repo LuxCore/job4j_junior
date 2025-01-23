@@ -12,8 +12,8 @@ class SearchTest {
 	@Test
 	void testSearchForTxt() {
 		List<Path> expected = List.of(
-				Path.of(".\\src\\main\\java\\ru\\job4j\\io\\search_resources\\one.txt"),
-				Path.of(".\\src\\main\\java\\ru\\job4j\\io\\search_resources\\three.txt")
+				Path.of("./src/main/java/ru/job4j/io/search_resources/one.txt"),
+				Path.of("./src/main/java/ru/job4j/io/search_resources/three.txt")
 		);
 		Path start = Path.of(".");
 		List<Path> actual = Search.search(start, path -> path.toFile().getName().endsWith(".txt"));
