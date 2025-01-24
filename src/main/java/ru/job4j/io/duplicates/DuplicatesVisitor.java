@@ -24,13 +24,8 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-		paths.compute(new FileProperty(file.getFileName().toString(), attrs.size()), (k, v) -> {
-			if (v == null) {
-				v = new ArrayList<>();
-			}
-			v.add(file);
-			return v;
-		});
+		paths.computeIfAbsent(new FileProperty(file.getFileName().toString(), attrs.size()), k -> new ArrayList<>())
+				.add(file);
 		return FileVisitResult.CONTINUE;
 	}
 
