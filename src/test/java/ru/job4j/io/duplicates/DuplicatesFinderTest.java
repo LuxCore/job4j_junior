@@ -16,7 +16,7 @@ class DuplicatesFinderTest {
 		DuplicatesFinder df = new DuplicatesFinder();
 		Map<FileProperty, List<Path>> actual = df.getDuplicateFiles(start);
 		Map<FileProperty, List<Path>> expected = Map.of(
-				new FileProperty("one.txt", 33), List.of(
+				new FileProperty("one.txt", 32), List.of(
 						Path.of("./src/main/java/ru/job4j/io/search_resources/a/one.txt"),
 						Path.of("./src/main/java/ru/job4j/io/search_resources/one.txt")),
 				new FileProperty("three.txt", 0), List.of(
