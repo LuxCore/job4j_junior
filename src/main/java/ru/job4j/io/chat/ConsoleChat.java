@@ -3,6 +3,7 @@ package ru.job4j.io.chat;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -33,24 +34,27 @@ public class ConsoleChat {
 		List<String> chat = new LinkedList<>();
 		Scanner scanner = new Scanner(System.in);
 		Random random = new Random();
-		String botAnswer, myAnswer;
+		String botAnswer, myAnswer, answer;
 		boolean exitApp = false, isBotStop = false;
 		while (!exitApp) {
 			if (!isBotStop) {
 				botAnswer = phrases.get(random.nextInt(phrases.size()));
-				System.out.println(BOT + ": " + botAnswer);
-				chat.add(BOT + ": " + botAnswer);
+				answer = String.join(": ", BOT, botAnswer);
+				System.out.println(answer);
+				chat.add(answer);
 			}
-			System.out.print(IAM + ": ");
+			System.out.print(String.join("", IAM, ": "));
 			myAnswer = scanner.nextLine();
-			exitApp = myAnswer.equals(OUT);
-			chat.add(IAM + ": " + myAnswer);
-			if (myAnswer.equals(STOP)) {
+			answer = String.join(": ", IAM, myAnswer);
+			exitApp = OUT.equals(myAnswer);
+			chat.add(answer);
+			if (STOP.equals(myAnswer)) {
 				isBotStop = true;
-			} else if (myAnswer.equals(CONTINUE)) {
+			} else if (CONTINUE.equals(myAnswer)) {
 				isBotStop = false;
 			}
 		}
+		scanner.close();
 		saveLog(chat);
 	}
 
@@ -81,7 +85,7 @@ public class ConsoleChat {
 	}
 
 	private void saveLog(List<String> log) {
-		try (BufferedWriter writer = Files.newBufferedWriter(Path.of(this.path), StandardOpenOption.APPEND)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(Path.of(this.path), StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
 			for (String line : log) {
 				writer.write(line + System.lineSeparator());
 			}
