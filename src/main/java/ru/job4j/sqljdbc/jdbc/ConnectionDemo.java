@@ -12,13 +12,13 @@ public class ConnectionDemo {
 	private static final String APP_PROPERTIES = "src/main/resources/app.properties";
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		Class.forName("org.postgresql.Driver");
 		Properties properties = new Properties();
 		try (FileReader reader = new FileReader(APP_PROPERTIES)) {
 			properties.load(reader);
 		} catch (IOException e) {
 			throw new RuntimeException("Файл '%s' не найден.".formatted(APP_PROPERTIES));
 		}
+		Class.forName(properties.getProperty("db.driver"));
 		String dbUrl = properties.getProperty("db.url");
 		String dbLogin = properties.getProperty("db.login");
 		String dbPassword = properties.getProperty("db.password");
