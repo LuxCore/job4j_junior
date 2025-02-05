@@ -1,4 +1,4 @@
-package ru.job4j.sql_jdbc.jdbc;
+package ru.job4j.sqljdbc.jdbc;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.Properties;
 
 public class ConnectionDemo {
 	private static final String APP_PROPERTIES = "src/main/resources/app.properties";
+
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		Class.forName("org.postgresql.Driver");
 		Properties properties = new Properties();
