@@ -21,6 +21,7 @@
 		<puppycrawl.checkstyle>10.17.0</puppycrawl.checkstyle>
 		<jacoco.maven.plugin>0.8.12</jacoco.maven.plugin>
 		<maven.shade.plugin>3.6.0</maven.shade.plugin>
+		<postgresql>42.7.5</postgresql>
 	</properties>
 
 	<dependencies>
@@ -41,6 +42,11 @@
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.core}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql}</version>
 		</dependency>
 	</dependencies>
 
