@@ -52,7 +52,6 @@ public class TableEditor implements AutoCloseable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	private void initConnection() {
@@ -70,37 +69,25 @@ public class TableEditor implements AutoCloseable {
 	}
 
 	public void createTable(String tableName) {
-		try (Statement statement = connection.createStatement()) {
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS %s();".formatted(tableName));
-		} catch (SQLException e) {
-			throw new RuntimeException("Не удалось создать таблицу.");
-		}
+		executeStatement("CREATE TABLE IF NOT EXISTS %s();".formatted(tableName),
+				"Не удалось создать таблицу.");
 	}
 
 	public void dropTable(String tableName) {
-		try (Statement statement = connection.createStatement()) {
-			statement.executeUpdate("DROP TABLE IF EXISTS %s;".formatted(tableName));
-		} catch (SQLException e) {
-			throw new RuntimeException("Не удалось удалить таблицу.");
-		}
+		executeStatement("DROP TABLE IF EXISTS %s;".formatted(tableName),
+				"Не удалось удалить таблицу.");
 	}
 
 	public void addColumn(String tableName, String columnName, String columnType) {
-		try (Statement statement = connection.createStatement()) {
-			statement.executeUpdate("ALTER TABLE IF EXISTS %s ADD COLUMN IF NOT EXISTS %s %s;"
-					.formatted(tableName, columnName, columnType));
-		} catch (SQLException e) {
-			throw new RuntimeException("Не удалось добавить поле в таблицу.");
-		}
+		executeStatement("ALTER TABLE IF EXISTS %s ADD COLUMN IF NOT EXISTS %s %s;"
+						.formatted(tableName, columnName, columnType),
+				"Не удалось добавить поле в таблицу.");
 	}
 
 	public void dropColumn(String tableName, String columnName) {
-		try (Statement statement = connection.createStatement()) {
-			statement.executeUpdate("ALTER TABLE IF EXISTS %s DROP COLUMN IF EXISTS %s;"
-					.formatted(tableName, columnName));
-		} catch (SQLException e) {
-			throw new RuntimeException("Не удалось удалить поле из таблицы.");
-		}
+		executeStatement("ALTER TABLE IF EXISTS %s DROP COLUMN IF EXISTS %s;"
+						.formatted(tableName, columnName),
+				"Не удалось удалить поле из таблицы.");
 	}
 
 	public void renameColumn(String tableName, String columnName, String newColumnName) {
@@ -112,15 +99,9 @@ public class TableEditor implements AutoCloseable {
 				.add("THEN")
 				.add("ALTER TABLE %1$s RENAME COLUMN %2$s TO %3$s;")
 				.add("END IF;\nEND $$;");
-//		System.out.printf((query.toString()) + "%n", tableName, columnName, newColumnName);
-		try (Statement statement = connection.createStatement()) {
-			statement.executeUpdate(
-//					"ALTER TABLE IF EXISTS %s RENAME COLUMN %s TO %s;"
-					query.toString()
-					.formatted(tableName, columnName, newColumnName));
-		} catch (SQLException e) {
-			throw new RuntimeException("Не удалось переименовать поле в таблице.");
-		}
+		executeStatement(query.toString()
+						.formatted(tableName, columnName, newColumnName),
+				"Не удалось переименовать поле в таблице.");
 	}
 
 	public String getTableDefinition(String tableName) throws Exception {
@@ -141,6 +122,14 @@ public class TableEditor implements AutoCloseable {
 			}
 		}
 		return buffer.toString();
+	}
+
+	private void executeStatement(String query, String exceptionMessage) {
+		try (Statement statement = connection.createStatement()) {
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			throw new RuntimeException(exceptionMessage);
+		}
 	}
 
 	@Override
